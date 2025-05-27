@@ -12,32 +12,44 @@ export default function STPPlant() {
       value: "2,450",
       unit: "m³/day",
       icon: Droplets,
-      trend: "+5.2%",
-      isPositive: true,
+      trend: {
+        value: "+5.2%",
+        direction: "up" as const,
+        description: "vs. last month"
+      },
     },
     {
       title: "Treatment Efficiency",
       value: "96.8",
       unit: "%",
       icon: TrendingUp,
-      trend: "+2.1%",
-      isPositive: true,
+      trend: {
+        value: "+2.1%",
+        direction: "up" as const,
+        description: "vs. last month"
+      },
     },
     {
       title: "BOD Removal",
       value: "98.2",
       unit: "%",
       icon: Zap,
-      trend: "+1.5%",
-      isPositive: true,
+      trend: {
+        value: "+1.5%",
+        direction: "up" as const,
+        description: "vs. last month"
+      },
     },
     {
       title: "System Alerts",
       value: "3",
       unit: "Active",
       icon: AlertTriangle,
-      trend: "-2",
-      isPositive: true,
+      trend: {
+        value: "-2",
+        direction: "down" as const,
+        description: "vs. last month"
+      },
     },
   ];
 
