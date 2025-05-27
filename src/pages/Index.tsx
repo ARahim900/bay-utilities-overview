@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Label, Area } from 'recharts'; // Added Area for gradient
-import { Search, Bell, ChevronDown, SlidersHorizontal, Share2, LayoutDashboard, BarChart2, List, Zap, TrendingUp, Users2, MapPin, Power, DollarSign, Filter, Settings, FileText, Activity, Droplets, Combine, UserCheck, Columns, Sparkles, X, CalendarDays, CheckIcon, Building } from 'lucide-react'; // Added Building icon
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Label, Area } from 'recharts';
+import { Search, Bell, ChevronDown, SlidersHorizontal, Share2, LayoutDashboard, BarChart2, List, Zap, TrendingUp, Users2, MapPin, Power, DollarSign, Filter, Settings, FileText, Activity, Droplets, Combine, UserCheck, Columns, Sparkles, X, CalendarDays, CheckIcon, Building } from 'lucide-react';
 
 // OMR Conversion Rate
 const OMR_PER_KWH = 0.025;
@@ -12,6 +12,7 @@ const PRIMARY_COLOR_DARK = '#3B3241';
 
 // Updated PIE_COLORS
 const PIE_COLORS = ['#6A5ACD', '#FFA07A', '#20B2AA', '#FF69B4', '#9370DB', '#F08080', '#4682B4'];
+
 const rawDataString = `SL:no.	Zone	Type 	Muscat Bay Number	Unit Number (Muncipality) 	Electrical Meter Account  No	November-24	December-24	January-25	February-25	March-25	April-25
 1	Infrastructure	MC	MC	Pumping Station 01 	R52330	1629	1640	1903	2095	3032	3940
 2	Infrastructure	MC	MC	Pumping Station 03	R52329	0	179	32.5	137.2	130.7	276.6
@@ -69,7 +70,8 @@ const rawDataString = `SL:no.	Zone	Type 	Muscat Bay Number	Unit Number (Muncipal
 54	Zone 3	SBJ Common Meter	FP-22	Zone-3 landscape light	R54874	6	8	0	0	0	0
 55		SBJ Common Meter		Bank muscat	MISSING_METER	148	72	59	98	88	163
 56		SBJ Common Meter		CIF kitchen	MISSING_METER	16742	15554	16788	16154	14971	18446`.trim();
-const extractCategory = unitName => {
+
+const extractCategory = (unitName: string) => {
   if (!unitName) return 'Other';
   const lowerUnitName = unitName.toLowerCase();
   if (lowerUnitName.includes('pumping station')) return 'Pumping Station';
@@ -88,11 +90,13 @@ const extractCategory = unitName => {
   if (lowerUnitName.includes('helipad')) return 'Helipad';
   return 'Other';
 };
-const parseData = rawData => {
+
+const parseData = (rawData: string) => {
   const lines = rawData.split('\n');
   const headerLine = lines[0].split('\t').map(h => h.trim());
   const dataLines = lines.slice(1);
   const monthsHeader = headerLine.slice(6);
+
   return dataLines.map((line, index) => {
     const values = line.split('\t');
     const unitName = values[4]?.trim() || 'N/A';
@@ -105,9 +109,10 @@ const parseData = rawData => {
       unitName: unitName,
       category: extractCategory(unitName),
       meterAccountNo: values[5]?.trim() || 'N/A',
-      consumption: {},
+      consumption: {} as Record<string, number>,
       totalConsumption: 0
     };
+    
     let currentOverallTotal = 0;
     monthsHeader.forEach((month, i) => {
       const consumptionValue = parseFloat(values[6 + i]);
@@ -120,6 +125,7 @@ const parseData = rawData => {
     return entry;
   });
 };
+
 const initialElectricityData = parseData(rawDataString);
 const availableMonths = Object.keys(initialElectricityData[0].consumption);
 
@@ -666,7 +672,7 @@ Be concise and use bullet points for your findings. If no significant anomalies 
                   right: 30,
                   left: 100,
                   bottom: 5
-                }}> <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} /> <XAxis type="number" tick={{
+                }}> <CartesianGrid strokeDasharray="3 3" horizontal={false} /> <XAxis type="number" tick={{
                     fontSize: 12,
                     fill: '#64748b'
                   }} /> <YAxis dataKey="name" type="category" tick={{
@@ -710,8 +716,7 @@ Be concise and use bullet points for your findings. If no significant anomalies 
                                 <YAxis tick={{
                   fontSize: 12,
                   fill: '#64748b'
-                }} />
-                                <Tooltip /> <Legend />
+                }} /> <Tooltip /> <Legend />
                                 <Area type="monotone" dataKey="total" stroke={PRIMARY_COLOR_DARK} fill="url(#perfGrad)" name="Total kWh" />
                                 <Line type="monotone" dataKey="total" stroke={PRIMARY_COLOR_DARK} strokeWidth={2} dot={false} name="Total kWh" />
                             </LineChart>
