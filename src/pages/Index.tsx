@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Label, Area } from 'recharts';
 import { Search, Bell, ChevronDown, SlidersHorizontal, Share2, LayoutDashboard, BarChart2, List, Zap, TrendingUp, Users2, MapPin, Power, DollarSign, Filter, Settings, FileText, Activity, Droplets, Combine, UserCheck, Columns, Sparkles, X, CalendarDays, CheckIcon, Building, Home, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { LucideIcon } from 'lucide-react';
 
 // OMR Conversion Rate
 const OMR_PER_KWH = 0.025;
@@ -145,9 +146,9 @@ const Sidebar = ({
   const mainSections = [
     { name: 'Home', icon: Home, sectionId: 'Home', path: '/' },
     { name: 'Electricity System', icon: Zap, sectionId: 'ElectricitySystem' },
-    { name: 'Water Analysis', icon: Droplets, sectionId: 'WaterAnalysis' },
-    { name: 'STP Plant', icon: Combine, sectionId: 'STPPlant' },
-    { name: 'Contractor Tracker', icon: UserCheck, sectionId: 'ContractorTracker' },
+    { name: 'Water Analysis', icon: Droplets, sectionId: 'WaterAnalysis', path: '/water' },
+    { name: 'STP Plant', icon: Combine, sectionId: 'STPPlant', path: '/stp' },
+    { name: 'Contractor Tracker', icon: UserCheck, sectionId: 'ContractorTracker', path: '/contractor' },
   ];
 
   return (
@@ -296,7 +297,7 @@ const StyledSelect = ({
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: { value: string; label: string }[];
   id: string;
-  icon?: React.ComponentType<{ size: number }>;
+  icon?: LucideIcon;
 }) => {
   return (
     <div>
@@ -436,7 +437,7 @@ const SummaryCard = ({
 }: {
   title: string;
   value: string;
-  icon: React.ComponentType<{ size: number }>;
+  icon: LucideIcon;
   unit: string;
   trend?: string;
   trendColor?: string;
@@ -513,7 +514,7 @@ const PlaceholderPage = ({
   icon
 }: {
   title: string;
-  icon?: React.ComponentType<{ size: number; className?: string; style?: React.CSSProperties }>;
+  icon?: LucideIcon;
 }) => {
   const IconComponent = icon || Activity;
   return (
