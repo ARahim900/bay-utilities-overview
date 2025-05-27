@@ -16,7 +16,7 @@ import {
   X
 } from 'lucide-react';
 import { MUSCAT_BAY_THEME } from '@/lib/theme';
-import { MuscatBayLogo } from './Logo';
+import { MuscatBayLogo } from '@/components/shared/Logo';
 
 interface LayoutProps {
   children: React.ReactNode;
