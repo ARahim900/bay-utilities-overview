@@ -4,7 +4,6 @@ import { Users, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 export default function ContractorTracker() {
   const contractorMetrics = [
@@ -13,32 +12,44 @@ export default function ContractorTracker() {
       value: "23",
       unit: "Teams",
       icon: Users,
-      trend: "+3",
-      isPositive: true,
+      trend: {
+        value: "+3",
+        direction: "up" as const,
+        description: "vs. last month"
+      },
     },
     {
       title: "Completed Projects",
       value: "47",
       unit: "This Month",
       icon: CheckCircle,
-      trend: "+12.5%",
-      isPositive: true,
+      trend: {
+        value: "+12.5%",
+        direction: "up" as const,
+        description: "vs. last month"
+      },
     },
     {
       title: "Average Completion",
       value: "87",
       unit: "%",
       icon: Clock,
-      trend: "+5.2%",
-      isPositive: true,
+      trend: {
+        value: "+5.2%",
+        direction: "up" as const,
+        description: "vs. last month"
+      },
     },
     {
       title: "Pending Reviews",
       value: "8",
       unit: "Projects",
       icon: AlertCircle,
-      trend: "-2",
-      isPositive: true,
+      trend: {
+        value: "-2",
+        direction: "down" as const,
+        description: "vs. last month"
+      },
     },
   ];
 
@@ -79,15 +90,6 @@ export default function ContractorTracker() {
       deadline: "2025-05-30",
       priority: "critical"
     },
-    {
-      id: "P005",
-      contractor: "Utility Specialists Co",
-      project: "Monthly Inspection Round",
-      progress: 78,
-      status: "on-track",
-      deadline: "2025-06-10",
-      priority: "medium"
-    }
   ];
 
   const getStatusBadge = (status: string) => {
@@ -229,43 +231,40 @@ export default function ContractorTracker() {
               Active Projects Overview
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-bay-100">
-                  <TableHead className="text-bay-700">Project ID</TableHead>
-                  <TableHead className="text-bay-700">Contractor</TableHead>
-                  <TableHead className="text-bay-700">Project Description</TableHead>
-                  <TableHead className="text-bay-700">Progress</TableHead>
-                  <TableHead className="text-bay-700">Status</TableHead>
-                  <TableHead className="text-bay-700">Priority</TableHead>
-                  <TableHead className="text-bay-700">Deadline</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {activeProjects.map((project) => (
-                  <TableRow key={project.id} className="border-bay-100">
-                    <TableCell className="font-medium text-bay-800">{project.id}</TableCell>
-                    <TableCell className="text-bay-600">{project.contractor}</TableCell>
-                    <TableCell className="text-bay-600">{project.project}</TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>{project.progress}%</span>
+          <CardContent className="p-6">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-bay-100">
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Project ID</th>
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Contractor</th>
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Project Description</th>
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Progress</th>
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Status</th>
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Priority</th>
+                    <th className="text-left py-3 px-4 font-medium text-bay-700">Deadline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activeProjects.map((project) => (
+                    <tr key={project.id} className="border-b border-bay-100 hover:bg-bay-50">
+                      <td className="py-3 px-4 font-medium text-bay-800">{project.id}</td>
+                      <td className="py-3 px-4 text-bay-600">{project.contractor}</td>
+                      <td className="py-3 px-4 text-bay-600">{project.project}</td>
+                      <td className="py-3 px-4">
+                        <div className="space-y-1">
+                          <span className="text-sm text-bay-600">{project.progress}%</span>
+                          <Progress value={project.progress} className="h-2" />
                         </div>
-                        <Progress 
-                          value={project.progress} 
-                          className="h-2"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(project.status)}</TableCell>
-                    <TableCell>{getPriorityBadge(project.priority)}</TableCell>
-                    <TableCell className="text-bay-600">{project.deadline}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                      </td>
+                      <td className="py-3 px-4">{getStatusBadge(project.status)}</td>
+                      <td className="py-3 px-4">{getPriorityBadge(project.priority)}</td>
+                      <td className="py-3 px-4 text-bay-600">{project.deadline}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </CardContent>
         </Card>
       </div>
