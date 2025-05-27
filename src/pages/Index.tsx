@@ -152,7 +152,7 @@ const Sidebar = ({
         <Power size={32} style={{
         color: PRIMARY_COLOR_LIGHT
       }} className="animate-pulse" /> 
-        <span className="text-xl font-bold">Muscat Bay
+        <span className="font-bold text-lg text-justify">Muscat Bay
 Assets & Ops</span>
       </div>
       <nav className="space-y-2">
